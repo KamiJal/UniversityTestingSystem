@@ -205,6 +205,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\University\Faculty.cs" />
     <Compile Include="Models\University\Group.cs" />
+    <Compile Include="Models\University\Subject.cs" />
     <Compile Include="Models\Utility\DisplayNames.cs" />
     <Compile Include="Models\Utility\ErrorMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
