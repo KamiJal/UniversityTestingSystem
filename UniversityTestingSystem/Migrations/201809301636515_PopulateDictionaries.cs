@@ -2,7 +2,7 @@ namespace UniversityTestingSystem.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class PopulateDictionaries : DbMigration
     {
         public override void Up()
@@ -22,9 +22,8 @@ namespace UniversityTestingSystem.Migrations
             Sql("INSERT INTO Subjects (Name) VALUES (N'Математика')");
             Sql("INSERT INTO Subjects (Name) VALUES (N'Физика')");
             Sql("INSERT INTO Subjects (Name) VALUES (N'Информатика')");
-
         }
-        
+
         public override void Down()
         {
         }

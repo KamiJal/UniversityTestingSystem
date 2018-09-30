@@ -10,6 +10,7 @@ using UniversityTestingSystem.Models.ViewModels;
 namespace UniversityTestingSystem.Controllers
 {
 
+    [Authorize]
     public class StudentsController : Controller
     {
         private ApplicationDbContext _context;
@@ -43,6 +44,21 @@ namespace UniversityTestingSystem.Controllers
             };
 
             return View("StudentForm", viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Form(Student student)
+        {
+            if (!ModelState.IsValid)
+            {
+
+
+            }
+
+
+
+            return View("StudentForm");
         }
     }
 }

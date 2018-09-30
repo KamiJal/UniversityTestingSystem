@@ -12,7 +12,9 @@ namespace UniversityTestingSystem.Models.University
     {
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        [Required]
+        [StringLength(128)]
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredTextBox)]
