@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using UniversityTestingSystem.Models;
 using UniversityTestingSystem.Models.University;
 using UniversityTestingSystem.Models.ViewModels;
@@ -29,16 +31,13 @@ namespace UniversityTestingSystem.Controllers
         // GET: students/form        
         public ActionResult Form()
         {
-            var viewModel = new StudentViewModel
-            {
-                //Faculties = new List<Faculty>
-                //{
-                //    new Faculty {Code = "JOU", Id = 1, Name = "Журналистика" },
-                //    new Faculty {Code = "TRA", Id = 2, Name = "Переводческое дело" },
-                //    new Faculty {Code = "PSY", Id = 3, Name = "Психология" },
-                //    new Faculty {Code = "TOU", Id = 4, Name = "Туризм" },
-                //},
+            var student = _context.Students.SingleOrDefault(s => s.UserId.Equals(User.Identity.GetUserId()));
 
+            if (student.IsFormFilled)
+                return RedirectToAction("Profile");
+
+            var viewModel = new StudentFormViewModel
+            {
                 Faculties = _context.Faculties.ToList(),
                 Groups = _context.Groups.ToList()
             };
@@ -48,17 +47,34 @@ namespace UniversityTestingSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Form(Student student)
+        public ActionResult Create(Student student)
         {
             if (!ModelState.IsValid)
             {
+                var viewModel = new StudentFormViewModel
+                {
+                    Student = student,
+                    Faculties = _context.Faculties.ToList(),
+                    Groups = _context.Groups.ToList()
+                };
 
-
+                return View("StudentForm", viewModel);
             }
 
+            student.UserId = User.Identity.GetUserId();
 
+            _context.Students.Add(student);
 
-            return View("StudentForm");
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                return View("ErrorDb", ex.Errors);
+            }
+
+            return RedirectToAction("Profile");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model UniversityTestingSystem.Models.ViewModels.StudentViewModel
+﻿@model UniversityTestingSystem.Models.ViewModels.StudentFormViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,7 @@
 
     <h2>Анкета</h2>
 
-    using (Html.BeginForm())
+    using (Html.BeginForm("Create", "Students", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
 

@@ -6,7 +6,7 @@ using UniversityTestingSystem.Models.University;
 
 namespace UniversityTestingSystem.Models.ViewModels
 {
-    public class StudentViewModel
+    public class StudentFormViewModel
     {
         public Student Student { get; set; }
         public List<Group> Groups { get; set; }
