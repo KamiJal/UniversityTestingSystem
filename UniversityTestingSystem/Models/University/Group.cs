@@ -15,11 +15,5 @@ namespace UniversityTestingSystem.Models.University
         [Display(Name = DisplayNames.Group)]
         [StringLength(255, ErrorMessage = ErrorMessages.StringLength255)]
         public string Name { get; set; }
-
-        [Display(Name = DisplayNames.Faculty)]
-        [Required(ErrorMessage = ErrorMessages.RequiredComboBox)]
-        public int FacultyId { get; set; }
-
-        public Faculty Faculty { get; set; }
     }
 }

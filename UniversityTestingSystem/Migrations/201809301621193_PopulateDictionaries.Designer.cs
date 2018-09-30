@@ -7,13 +7,13 @@ namespace UniversityTestingSystem.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class PopulateGroups : IMigrationMetadata
+    public sealed partial class PopulateDictionaries : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(PopulateGroups));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PopulateDictionaries));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809301544284_PopulateGroups"; }
+            get { return "201809301621193_PopulateDictionaries"; }
         }
         
         string IMigrationMetadata.Source

@@ -39,15 +39,7 @@ namespace UniversityTestingSystem.Controllers
                 //},
 
                 Faculties = _context.Faculties.ToList(),
-
-                Groups = new List<Group>
-                {
-                    new Group {Id = 1, FacultyId = 1, Name = "101"},
-                    new Group {Id = 2, FacultyId = 1, Name = "102"},
-                    new Group {Id = 2, FacultyId = 1, Name = "103"},
-                    new Group {Id = 2, FacultyId = 1, Name = "104"},
-                    new Group {Id = 2, FacultyId = 1, Name = "105"}
-                 }
+                Groups = _context.Groups.ToList()
             };
 
             return View("StudentForm", viewModel);

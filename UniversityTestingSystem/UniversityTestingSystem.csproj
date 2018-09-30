@@ -200,17 +200,13 @@
     <Compile Include="Migrations\201809300953392_InitialMigration.Designer.cs">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809301400082_UniversityModel.cs" />
-    <Compile Include="Migrations\201809301400082_UniversityModel.Designer.cs">
-      <DependentUpon>201809301400082_UniversityModel.cs</DependentUpon>
+    <Compile Include="Migrations\201809301616181_UniversityModel.cs" />
+    <Compile Include="Migrations\201809301616181_UniversityModel.Designer.cs">
+      <DependentUpon>201809301616181_UniversityModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809301427250_PopulateFaculty.cs" />
-    <Compile Include="Migrations\201809301427250_PopulateFaculty.Designer.cs">
-      <DependentUpon>201809301427250_PopulateFaculty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201809301544284_PopulateGroups.cs" />
-    <Compile Include="Migrations\201809301544284_PopulateGroups.Designer.cs">
-      <DependentUpon>201809301544284_PopulateGroups.cs</DependentUpon>
+    <Compile Include="Migrations\201809301621193_PopulateDictionaries.cs" />
+    <Compile Include="Migrations\201809301621193_PopulateDictionaries.Designer.cs">
+      <DependentUpon>201809301621193_PopulateDictionaries.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -305,14 +301,11 @@
     <EmbeddedResource Include="Migrations\201809300953392_InitialMigration.resx">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809301400082_UniversityModel.resx">
-      <DependentUpon>201809301400082_UniversityModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809301616181_UniversityModel.resx">
+      <DependentUpon>201809301616181_UniversityModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809301427250_PopulateFaculty.resx">
-      <DependentUpon>201809301427250_PopulateFaculty.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809301544284_PopulateGroups.resx">
-      <DependentUpon>201809301544284_PopulateGroups.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809301621193_PopulateDictionaries.resx">
+      <DependentUpon>201809301621193_PopulateDictionaries.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -31,6 +31,12 @@ namespace UniversityTestingSystem.Models.University
 
         public Group Group { get; set; }
 
+        [Required(ErrorMessage = ErrorMessages.RequiredComboBox)]
+        [Display(Name = DisplayNames.Faculty)]
+        public int FacultyId { get; set; }
+
+        public Faculty Faculty { get; set; }
+
         public bool IsFormFilled { get; set; } = false;
     }
 }

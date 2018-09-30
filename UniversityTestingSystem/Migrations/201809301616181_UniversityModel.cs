@@ -23,11 +23,8 @@ namespace UniversityTestingSystem.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 255),
-                        FacultyId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Faculties", t => t.FacultyId, cascadeDelete: true)
-                .Index(t => t.FacultyId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Students",
@@ -38,13 +35,16 @@ namespace UniversityTestingSystem.Migrations
                         FirstName = c.String(nullable: false, maxLength: 255),
                         LastName = c.String(nullable: false, maxLength: 255),
                         GroupId = c.Int(nullable: false),
+                        FacultyId = c.Int(nullable: false),
                         IsFormFilled = c.Boolean(nullable: false),
                         User_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Faculties", t => t.FacultyId, cascadeDelete: true)
                 .ForeignKey("dbo.Groups", t => t.GroupId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
                 .Index(t => t.GroupId)
+                .Index(t => t.FacultyId)
                 .Index(t => t.User_Id);
             
             CreateTable(
@@ -62,10 +62,10 @@ namespace UniversityTestingSystem.Migrations
         {
             DropForeignKey("dbo.Students", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.Students", "GroupId", "dbo.Groups");
-            DropForeignKey("dbo.Groups", "FacultyId", "dbo.Faculties");
+            DropForeignKey("dbo.Students", "FacultyId", "dbo.Faculties");
             DropIndex("dbo.Students", new[] { "User_Id" });
+            DropIndex("dbo.Students", new[] { "FacultyId" });
             DropIndex("dbo.Students", new[] { "GroupId" });
-            DropIndex("dbo.Groups", new[] { "FacultyId" });
             DropTable("dbo.Subjects");
             DropTable("dbo.Students");
             DropTable("dbo.Groups");
