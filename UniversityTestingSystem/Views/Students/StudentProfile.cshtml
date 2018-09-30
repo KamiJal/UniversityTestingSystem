@@ -1,0 +1,31 @@
+﻿@model UniversityTestingSystem.Models.University.Student
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br/>
+
+<h4 class="text-muted">Студент</h4>
+<p class="h2">@Model.FirstName @Model.LastName</p>
+<hr/>
+
+<div class="row">
+
+    <div class="col-md-10">
+        <h4 class="text-muted">Факультет</h4>
+        <p class="h3">@Model.Faculty.Name</p>
+    </div>
+    
+    <div class="col-md-10">
+        <h4 class="text-muted">Группа</h4>
+        <p class="h3">@Model.Faculty.Code-@Model.Group.Name</p>
+    </div>
+
+    <div class="col-md-10">
+        <h4 class="text-muted">Выполненные тесты</h4>
+        <p class="h3">@Model.Faculty.Code-@Model.Group.Name</p>
+    </div>
+
+</div>
+
+

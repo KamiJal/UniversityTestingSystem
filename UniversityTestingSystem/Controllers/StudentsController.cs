@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,17 +25,22 @@ namespace UniversityTestingSystem.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            _context.Dispose();
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
 
 
         // GET: students/form        
-        public ActionResult Form()
+        public ActionResult StudentForm()
         {
-            var student = _context.Students.SingleOrDefault(s => s.UserId.Equals(User.Identity.GetUserId()));
+            var currentUserId = User.Identity.GetUserId();
 
-            if (student.IsFormFilled)
-                return RedirectToAction("Profile");
+            var student = _context.Students.SingleOrDefault(s => s.UserId.Equals(currentUserId));
+
+            if (student != null && student.IsFormFilled)
+                return RedirectToAction("StudentProfile");
 
             var viewModel = new StudentFormViewModel
             {
@@ -49,11 +55,10 @@ namespace UniversityTestingSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !User.Identity.GetUserId().Equals(student.UserId))
             {
-                var viewModel = new StudentFormViewModel
+                var viewModel = new StudentFormViewModel(student)
                 {
-                    Student = student,
                     Faculties = _context.Faculties.ToList(),
                     Groups = _context.Groups.ToList()
                 };
@@ -61,7 +66,7 @@ namespace UniversityTestingSystem.Controllers
                 return View("StudentForm", viewModel);
             }
 
-            student.UserId = User.Identity.GetUserId();
+            student.IsFormFilled = true;
 
             _context.Students.Add(student);
 
@@ -74,7 +79,20 @@ namespace UniversityTestingSystem.Controllers
                 return View("ErrorDb", ex.Errors);
             }
 
-            return RedirectToAction("Profile");
+            return RedirectToAction("StudentProfile");
         }
+
+        public ActionResult StudentProfile()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentStudent = _context.Students
+                .Include(s => s.Faculty)
+                .Include(s => s.Group)
+                .Single(s => s.UserId.Equals(currentUserId));
+
+
+            return View(currentStudent);
+        }
+
     }
 }

@@ -281,6 +281,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Students\StudentForm.cshtml" />
     <Content Include="Views\Shared\ErrorDb.cshtml" />
+    <Content Include="Views\Students\StudentProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
