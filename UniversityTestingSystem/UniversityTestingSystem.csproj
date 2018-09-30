@@ -200,6 +200,10 @@
     <Compile Include="Migrations\201809300953392_InitialMigration.Designer.cs">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809301400082_UniversityModel.cs" />
+    <Compile Include="Migrations\201809301400082_UniversityModel.Designer.cs">
+      <DependentUpon>201809301400082_UniversityModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -291,6 +295,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201809300953392_InitialMigration.resx">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809301400082_UniversityModel.resx">
+      <DependentUpon>201809301400082_UniversityModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

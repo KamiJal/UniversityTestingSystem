@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using UniversityTestingSystem.Models.University;
 
 namespace UniversityTestingSystem.Models
 {
@@ -29,5 +30,10 @@ namespace UniversityTestingSystem.Models
         {
             return new ApplicationDbContext();
         }
+
+        private DbSet<Faculty> Faculties { get; set; }
+        private DbSet<Group> Groups { get; set; }
+        private DbSet<Subject> Subjects { get; set; }
+        private DbSet<Student> Students { get; set; }
     }
 }
