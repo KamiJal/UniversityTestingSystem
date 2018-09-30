@@ -7,13 +7,19 @@ using UniversityTestingSystem.Models.Utility;
 
 namespace UniversityTestingSystem.Models.University
 {
-    public class Faculty
+    public class Group
     {
         public int Id { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredComboBox)]
-        [Display(Name = DisplayNames.Faculty)]
+        [Display(Name = DisplayNames.Group)]
         [StringLength(255, ErrorMessage = ErrorMessages.StringLength255)]
         public string Name { get; set; }
+
+        [Display(Name = DisplayNames.Faculty)]
+        [Required(ErrorMessage = ErrorMessages.RequiredComboBox)]
+        public int FacultyId { get; set; }
+
+        public Faculty Faculty { get; set; }
     }
 }
