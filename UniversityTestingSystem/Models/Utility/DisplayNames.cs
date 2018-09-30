@@ -9,6 +9,7 @@ namespace UniversityTestingSystem.Models.Utility
     {
         //university
         public const string Faculty = "Факультет";
+        public const string FacultyCode = "Код факультета";
         public const string Group = "Группа";
         public const string Subject = "Предмет";
 
