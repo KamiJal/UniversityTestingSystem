@@ -21,6 +21,11 @@ namespace UniversityTestingSystem.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Student> Students { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -31,9 +36,6 @@ namespace UniversityTestingSystem.Models
             return new ApplicationDbContext();
         }
 
-        private DbSet<Faculty> Faculties { get; set; }
-        private DbSet<Group> Groups { get; set; }
-        private DbSet<Subject> Subjects { get; set; }
-        private DbSet<Student> Students { get; set; }
+
     }
 }

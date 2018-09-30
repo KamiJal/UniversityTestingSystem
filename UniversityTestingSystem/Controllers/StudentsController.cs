@@ -30,13 +30,15 @@ namespace UniversityTestingSystem.Controllers
         {
             var viewModel = new StudentViewModel
             {
-                Faculties = new List<Faculty>
-                {
-                    new Faculty {Code = "JOU", Id = 1, Name = "Журналистика" },
-                    new Faculty {Code = "TRA", Id = 2, Name = "Переводческое дело" },
-                    new Faculty {Code = "PSY", Id = 3, Name = "Психология" },
-                    new Faculty {Code = "TOU", Id = 4, Name = "Туризм" },
-                },
+                //Faculties = new List<Faculty>
+                //{
+                //    new Faculty {Code = "JOU", Id = 1, Name = "Журналистика" },
+                //    new Faculty {Code = "TRA", Id = 2, Name = "Переводческое дело" },
+                //    new Faculty {Code = "PSY", Id = 3, Name = "Психология" },
+                //    new Faculty {Code = "TOU", Id = 4, Name = "Туризм" },
+                //},
+
+                Faculties = _context.Faculties.ToList(),
 
                 Groups = new List<Group>
                 {
