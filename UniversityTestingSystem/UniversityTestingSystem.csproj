@@ -209,6 +209,7 @@
       <DependentUpon>201809301636515_PopulateDictionaries.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\University\Test.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Models\Utility\DisplayNames.cs" />
     <Compile Include="Models\Utility\ErrorMessages.cs" />
     <Compile Include="Models\ViewModels\StudentFormViewModel.cs" />
+    <Compile Include="Models\ViewModels\StudentProfileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
