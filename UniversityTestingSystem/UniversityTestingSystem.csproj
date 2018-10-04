@@ -204,19 +204,12 @@
     <Compile Include="Migrations\201809301635592_UniversityModel.Designer.cs">
       <DependentUpon>201809301635592_UniversityModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809301636515_PopulateDictionaries.cs" />
-    <Compile Include="Migrations\201809301636515_PopulateDictionaries.Designer.cs">
-      <DependentUpon>201809301636515_PopulateDictionaries.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810041604194_AddedTests-TestQuestions.cs" />
-    <Compile Include="Migrations\201810041604194_AddedTests-TestQuestions.Designer.cs">
-      <DependentUpon>201810041604194_AddedTests-TestQuestions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810041614411_PopulateTests-TestQuestions.cs" />
-    <Compile Include="Migrations\201810041614411_PopulateTests-TestQuestions.Designer.cs">
-      <DependentUpon>201810041614411_PopulateTests-TestQuestions.cs</DependentUpon>
+    <Compile Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.cs" />
+    <Compile Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.Designer.cs">
+      <DependentUpon>201810042040322_PopulateUniversityModelWithInitialData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\University\Test\StudentFinishedTest.cs" />
     <Compile Include="Models\University\Test\Test.cs" />
     <Compile Include="Models\University\Test\TestQuestion.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -320,14 +313,8 @@
     <EmbeddedResource Include="Migrations\201809301635592_UniversityModel.resx">
       <DependentUpon>201809301635592_UniversityModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809301636515_PopulateDictionaries.resx">
-      <DependentUpon>201809301636515_PopulateDictionaries.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810041604194_AddedTests-TestQuestions.resx">
-      <DependentUpon>201810041604194_AddedTests-TestQuestions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810041614411_PopulateTests-TestQuestions.resx">
-      <DependentUpon>201810041614411_PopulateTests-TestQuestions.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.resx">
+      <DependentUpon>201810042040322_PopulateUniversityModelWithInitialData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
