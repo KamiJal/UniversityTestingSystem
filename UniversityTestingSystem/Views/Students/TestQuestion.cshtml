@@ -1,0 +1,42 @@
+﻿@model UniversityTestingSystem.Models.ViewModels.TestQuestionViewModel
+
+@{
+    ViewBag.Title = "TestQuestion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<br />
+<br />
+<h5 class="text-muted">@Model.TestName</h5>
+<hr />
+
+<h4>Вопрос: </h4>
+<h3>@Model.Question</h3>
+<hr />
+<br />
+
+@using (Html.BeginForm("RecordAnswer", "Students", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.Hidden("QuestionId", Model.QuestionId)
+    @Html.Hidden("CurrentQuestionId", Model.CurrentQuestionId)
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <p class="h4"><input type="radio" name="StudentAnswer" value="A"><span class="text-muted"> А: </span>@Model.AnswerA</p>
+                    <p class="h4"><input type="radio" name="StudentAnswer" value="B"><span class="text-muted"> B: </span>@Model.AnswerB</p>
+                    <p class="h4"><input type="radio" name="StudentAnswer" value="C"><span class="text-muted"> C: </span>@Model.AnswerC</p>
+                    <p class="h4"><input type="radio" name="StudentAnswer" value="D"><span class="text-muted"> D: </span>@Model.AnswerD</p>
+                    <input type="submit" class="btn btn-primary" value="Далее"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+

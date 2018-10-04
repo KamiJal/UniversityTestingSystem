@@ -13,7 +13,7 @@
     using (Html.BeginForm("Create", "Students", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
-        @Html.Hidden("UserId", new { UserId = User.Identity.GetUserId() })
+        @Html.Hidden("UserId", User.Identity.GetUserId())
         <div class="form-horizontal">
             <h4>Ваш логин: @User.Identity.Name</h4>
             <hr />

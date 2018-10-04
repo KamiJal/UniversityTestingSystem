@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using UniversityTestingSystem.Models;
 using UniversityTestingSystem.Models.University;
+using UniversityTestingSystem.Models.University.Test;
 using UniversityTestingSystem.Models.ViewModels;
 
 namespace UniversityTestingSystem.Controllers
@@ -17,6 +18,9 @@ namespace UniversityTestingSystem.Controllers
     public class StudentsController : Controller
     {
         private ApplicationDbContext _context;
+
+        private static List<TestQuestion> currentTestQuestions;
+        private static int currentTestQuestionId;
 
         public StudentsController()
         {
@@ -31,17 +35,26 @@ namespace UniversityTestingSystem.Controllers
             }
         }
 
+        public ActionResult StudentProfile()
+        {
+            var currentUserId = User.Identity.GetUserId();
+
+            var currentStudent = _context.Students
+                .Include(s => s.Faculty)
+                .Include(s => s.Group)
+                .SingleOrDefault(s => s.UserId.Equals(currentUserId));
+
+            if (currentStudent == null)
+            {
+                return RedirectToAction("StudentForm", "Students");
+            }
+
+            return View(currentStudent);
+        }
 
         // GET: students/form        
         public ActionResult StudentForm()
         {
-            var currentUserId = User.Identity.GetUserId();
-
-            var student = _context.Students.SingleOrDefault(s => s.UserId.Equals(currentUserId));
-
-            if (student != null && student.IsFormFilled)
-                return RedirectToAction("StudentProfile");
-
             var viewModel = new StudentFormViewModel
             {
                 Faculties = _context.Faculties.ToList(),
@@ -55,7 +68,7 @@ namespace UniversityTestingSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student)
         {
-            if (!ModelState.IsValid || !User.Identity.GetUserId().Equals(student.UserId))
+            if (!ModelState.IsValid)
             {
                 var viewModel = new StudentFormViewModel(student)
                 {
@@ -82,16 +95,43 @@ namespace UniversityTestingSystem.Controllers
             return RedirectToAction("StudentProfile");
         }
 
-        public ActionResult StudentProfile()
+
+        public ActionResult StartTest(int id)
         {
-            var currentUserId = User.Identity.GetUserId();
-            var currentStudent = _context.Students
-                .Include(s => s.Faculty)
-                .Include(s => s.Group)
-                .Single(s => s.UserId.Equals(currentUserId));
+            currentTestQuestions = _context.TestQuestions.Include(tq => tq.Test).Where(tq => tq.TestId == id).ToList();
+            currentTestQuestionId = 0;
+
+            return RedirectToAction("TestOnAir");
+        }
+
+        public ActionResult TestOnAir()
+        {
+            if (currentTestQuestionId == 15)
+            {
+                return RedirectToAction("StudentProfile");
+            }
+
+            TestQuestion current = currentTestQuestions.ElementAt(currentTestQuestionId);
+            var viewModel = new TestQuestionViewModel(current, currentTestQuestionId);
+
+            return View("TestQuestion", viewModel);
+        }
 
 
-            return View(currentStudent);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RecordAnswer(TestAnswerViewModel response)
+        {
+            if (!ModelState.IsValid)
+            {
+                TestQuestion current = currentTestQuestions.ElementAt(response.CurrentQuestionId);
+                var viewModel = new TestQuestionViewModel(current, response.CurrentQuestionId);
+                return View("TestQuestion", viewModel);
+            }
+
+            currentTestQuestionId++;
+
+            return RedirectToAction("TestOnAir");
         }
 
     }
