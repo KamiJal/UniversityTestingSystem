@@ -28,7 +28,8 @@ namespace UniversityTestingSystem.Models
         public DbSet<Student> Students { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestQuestion> TestQuestions { get; set; }
-        public DbSet<StudentFinishedTestAnswer> StudentFinishedTestAnswers { get; set; }
+        public DbSet<FinishedTest> FinishedTests { get; set; }
+        public DbSet<TestAnswersList> TestAnswersLists { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

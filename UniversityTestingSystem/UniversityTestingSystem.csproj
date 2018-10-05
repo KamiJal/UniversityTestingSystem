@@ -200,18 +200,20 @@
     <Compile Include="Migrations\201809300953392_InitialMigration.Designer.cs">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201809301635592_UniversityModel.cs" />
-    <Compile Include="Migrations\201809301635592_UniversityModel.Designer.cs">
-      <DependentUpon>201809301635592_UniversityModel.cs</DependentUpon>
+    <Compile Include="Migrations\201810042343496_UniversityModel.cs" />
+    <Compile Include="Migrations\201810042343496_UniversityModel.Designer.cs">
+      <DependentUpon>201810042343496_UniversityModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.cs" />
-    <Compile Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.Designer.cs">
-      <DependentUpon>201810042040322_PopulateUniversityModelWithInitialData.cs</DependentUpon>
+    <Compile Include="Migrations\201810050008183_PopulateUniversityModel.cs" />
+    <Compile Include="Migrations\201810050008183_PopulateUniversityModel.Designer.cs">
+      <DependentUpon>201810050008183_PopulateUniversityModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\University\Test\StudentAnswersList.cs" />
     <Compile Include="Models\University\Test\StudentFinishedTest.cs" />
     <Compile Include="Models\University\Test\Test.cs" />
     <Compile Include="Models\University\Test\TestQuestion.cs" />
+    <Compile Include="Models\Utility\CurrentUserData.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
@@ -289,6 +291,7 @@
     <Content Include="Views\Shared\ErrorDb.cshtml" />
     <Content Include="Views\Students\StudentProfile.cshtml" />
     <Content Include="Views\Students\TestQuestion.cshtml" />
+    <Content Include="Views\Students\TestFinished.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -310,11 +313,11 @@
     <EmbeddedResource Include="Migrations\201809300953392_InitialMigration.resx">
       <DependentUpon>201809300953392_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201809301635592_UniversityModel.resx">
-      <DependentUpon>201809301635592_UniversityModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810042343496_UniversityModel.resx">
+      <DependentUpon>201810042343496_UniversityModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810042040322_PopulateUniversityModelWithInitialData.resx">
-      <DependentUpon>201810042040322_PopulateUniversityModelWithInitialData.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810050008183_PopulateUniversityModel.resx">
+      <DependentUpon>201810050008183_PopulateUniversityModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

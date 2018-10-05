@@ -38,7 +38,5 @@ namespace UniversityTestingSystem.Models.University
         public int FacultyId { get; set; }
 
         public Faculty Faculty { get; set; }
-
-        public bool IsFormFilled { get; set; } = false;
     }
 }

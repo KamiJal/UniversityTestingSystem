@@ -4,11 +4,13 @@ using System.Data.SqlClient;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using UniversityTestingSystem.Models;
 using UniversityTestingSystem.Models.University;
 using UniversityTestingSystem.Models.University.Test;
+using UniversityTestingSystem.Models.Utility;
 using UniversityTestingSystem.Models.ViewModels;
 
 namespace UniversityTestingSystem.Controllers
@@ -17,16 +19,17 @@ namespace UniversityTestingSystem.Controllers
     [Authorize]
     public class StudentsController : Controller
     {
-        private ApplicationDbContext _context;
+        //readonly dbContext to access the Db
+        private readonly ApplicationDbContext _context;
 
-        private static List<TestQuestion> currentTestQuestions;
-        private static int currentTestQuestionId;
-
+        //constructor initialize dbContext
         public StudentsController()
         {
             _context = new ApplicationDbContext();
+
         }
 
+        //disposes dbContext after use
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -35,24 +38,54 @@ namespace UniversityTestingSystem.Controllers
             }
         }
 
+        //dbContext save changes wrapped in try-catch
+        private void SaveChangesToDbSafe()
+        {
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (SqlException ex)
+            {
+                ShowErrorInDb(ex);
+            }
+        }
+
+        // GET: /Students/ShowErrorInDb
+        //shows error messages occured in Db
+        public ActionResult ShowErrorInDb(SqlException ex)
+        {
+            return View("ErrorDb", ex.Errors);
+        }
+
+        // GET: /Students/StudentProfile
+        //student profile where student can get all required information
         public ActionResult StudentProfile()
         {
-            var currentUserId = User.Identity.GetUserId();
+            CurrentUserData.UserId = User.Identity.GetUserId();
 
-            var currentStudent = _context.Students
+            CurrentUserData.Student = _context.Students
                 .Include(s => s.Faculty)
                 .Include(s => s.Group)
-                .SingleOrDefault(s => s.UserId.Equals(currentUserId));
+                .SingleOrDefault(s => s.UserId.Equals(CurrentUserData.UserId));
 
-            if (currentStudent == null)
+            if (CurrentUserData.Student == null)
             {
                 return RedirectToAction("StudentForm", "Students");
             }
 
-            return View(currentStudent);
+            var viewModel = new StudentProfileViewModel
+            {
+                Student = CurrentUserData.Student,
+                FinishedTests = _context.FinishedTests.Include(q => q.Test)
+                    .Where(q => q.StudentId == CurrentUserData.Student.Id).Select(q => q.Test).ToList()
+            };
+
+            return View(viewModel);
         }
 
-        // GET: students/form        
+        // GET: /Students/StudentForm
+        //form to fill by new user
         public ActionResult StudentForm()
         {
             var viewModel = new StudentFormViewModel
@@ -64,6 +97,8 @@ namespace UniversityTestingSystem.Controllers
             return View("StudentForm", viewModel);
         }
 
+        // POST: /Students/Create
+        //creates new student by filled data in the form
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Student student)
@@ -79,60 +114,106 @@ namespace UniversityTestingSystem.Controllers
                 return View("StudentForm", viewModel);
             }
 
-            student.IsFormFilled = true;
-
             _context.Students.Add(student);
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (SqlException ex)
-            {
-                return View("ErrorDb", ex.Errors);
-            }
+            SaveChangesToDbSafe();
 
             return RedirectToAction("StudentProfile");
         }
 
-
+        // GET: /Students/StartTest/{int id}
+        //starts test by id
         public ActionResult StartTest(int id)
         {
-            currentTestQuestions = _context.TestQuestions.Include(tq => tq.Test).Where(tq => tq.TestId == id).ToList();
-            currentTestQuestionId = 0;
+            if (!_context.Tests.Any(t => t.Id == id))
+                return View("Error");
+
+            CurrentUserData.Test = _context.Tests.Single(t => t.Id == id);
+
+            CurrentUserData.TestQuestions = _context.TestQuestions
+                .Where(tq => tq.TestId == id)
+                .ToList();
+
+            CurrentUserData.QuestionIterator = 0;
+
+            var test = new FinishedTest
+            {
+                StudentId = CurrentUserData.Student.Id,
+                TestId = CurrentUserData.Test.Id,
+                FinishedDate = DateTime.Now
+            };
+
+            _context.FinishedTests.Add(test);
+            SaveChangesToDbSafe();
+
+            CurrentUserData.FinishedTestId = test.Id;
 
             return RedirectToAction("TestOnAir");
         }
 
+        // GET: /Students/TestOnAir
+        //Iterates through the test questions
         public ActionResult TestOnAir()
         {
-            if (currentTestQuestionId == 15)
+            if (CurrentUserData.QuestionIterator == 15)
             {
-                return RedirectToAction("StudentProfile");
+                CalculateTestResult();
+                return View("TestFinished", CurrentUserData.Test.Name);
             }
 
-            TestQuestion current = currentTestQuestions.ElementAt(currentTestQuestionId);
-            var viewModel = new TestQuestionViewModel(current, currentTestQuestionId);
-
+            var viewModel = CurrentUserData.GetTestQuestionViewModel();
             return View("TestQuestion", viewModel);
         }
 
+        //Calculates Correct Test Answers
+        private void CalculateTestResult()
+        {
+            short points = 0;
 
+            var userAnswers = _context.TestAnswersLists
+                .Where(q => q.FinishedTestId == CurrentUserData.FinishedTestId).ToList();
+
+            foreach (var userAnswer in userAnswers)
+            {
+                if (CurrentUserData.TestQuestions
+                    .Exists(q => q.Id == userAnswer.TestQuestionId && q.CorrectAnswer.Equals(userAnswer.Answer)))
+                    points++;
+            }
+
+            var finishedTestInDb = _context.FinishedTests.Single(q => q.Id == CurrentUserData.FinishedTestId);
+            finishedTestInDb.Points = points;
+
+           SaveChangesToDbSafe();
+        }
+
+        // POST: /Students/RecordAnswer{int QuestionId, string Answer}
+        //saves answer to db
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult RecordAnswer(TestAnswerViewModel response)
         {
             if (!ModelState.IsValid)
             {
-                TestQuestion current = currentTestQuestions.ElementAt(response.CurrentQuestionId);
-                var viewModel = new TestQuestionViewModel(current, response.CurrentQuestionId);
+                var viewModel = CurrentUserData.GetTestQuestionViewModel();
                 return View("TestQuestion", viewModel);
             }
 
-            currentTestQuestionId++;
+            var testAnswer = new TestAnswersList
+            {
+                FinishedTestId = CurrentUserData.FinishedTestId,
+                TestQuestionId = response.QuestionId,
+                Answer = response.Answer
+            };
+
+            _context.TestAnswersLists.Add(testAnswer);
+            SaveChangesToDbSafe();
+
+            CurrentUserData.QuestionIterator++;
 
             return RedirectToAction("TestOnAir");
         }
+
+
+
 
     }
 }

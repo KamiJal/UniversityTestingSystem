@@ -10,32 +10,20 @@ namespace UniversityTestingSystem.Models.ViewModels
 {
     public class TestQuestionViewModel
     {
-        public int QuestionId { get; set; }
-
-        public int CurrentQuestionId { get; set; }
-
         public string TestName { get; set; }
 
+        public int QuestionId { get; set; }
         public string Question { get; set; }
+        public int QuestionIterator { get; set; }
 
         public string AnswerA { get; set; }
-
         public string AnswerB { get; set; }
-
         public string AnswerC { get; set; }
-
         public string AnswerD { get; set; }
 
-        [Required]
-        public string StudentAnswer { get; set; }
-
-        public TestQuestionViewModel() { }
-
-        public TestQuestionViewModel(TestQuestion current, int currentQuestionId)
+        public TestQuestionViewModel(TestQuestion current)
         {
-            CurrentQuestionId = currentQuestionId;
             QuestionId = current.Id;
-            TestName = current.Test.Name;
             Question = current.Question;
             AnswerA = current.AnswerA;
             AnswerB = current.AnswerB;

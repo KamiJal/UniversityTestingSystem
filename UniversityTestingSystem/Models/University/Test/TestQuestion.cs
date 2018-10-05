@@ -13,7 +13,6 @@ namespace UniversityTestingSystem.Models.University.Test
         public int Id { get; set; }
 
         public int TestId { get; set; }
-        public Test Test { get; set; }
 
         [Required]
         [StringLength(255, ErrorMessage = ErrorMessages.StringLength255)]

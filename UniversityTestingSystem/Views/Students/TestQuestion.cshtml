@@ -1,17 +1,19 @@
 ﻿@model UniversityTestingSystem.Models.ViewModels.TestQuestionViewModel
 
 @{
-    ViewBag.Title = "TestQuestion";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int questionNumber = Model.QuestionIterator + 1;
+
+    string btnName = questionNumber == 15 ? "Завершить" : "Далее";
+
 }
 
-
 <br />
-<br />
-<h5 class="text-muted">@Model.TestName</h5>
+<h5 class="text-muted">Тема теста: @Model.TestName 1234</h5>
 <hr />
 
-<h4>Вопрос: </h4>
+<h4 class="text-muted">Вопрос @questionNumber</h4>
 <h3>@Model.Question</h3>
 <hr />
 <br />
@@ -21,18 +23,33 @@
 
     @Html.AntiForgeryToken()
     @Html.Hidden("QuestionId", Model.QuestionId)
-    @Html.Hidden("CurrentQuestionId", Model.CurrentQuestionId)
 
     <div class="form-group">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-md-12">
+
                 <div class="input-group">
-                    <p class="h4"><input type="radio" name="StudentAnswer" value="A"><span class="text-muted"> А: </span>@Model.AnswerA</p>
-                    <p class="h4"><input type="radio" name="StudentAnswer" value="B"><span class="text-muted"> B: </span>@Model.AnswerB</p>
-                    <p class="h4"><input type="radio" name="StudentAnswer" value="C"><span class="text-muted"> C: </span>@Model.AnswerC</p>
-                    <p class="h4"><input type="radio" name="StudentAnswer" value="D"><span class="text-muted"> D: </span>@Model.AnswerD</p>
-                    <input type="submit" class="btn btn-primary" value="Далее"/>
+                    <input type="radio" name="Answer" value="A" id="A" style="margin-right: 5px"/>
+                    <label class="h4" for="A"><span class="text-muted">А: </span>@Model.AnswerA</label>
                 </div>
+                
+                <div class="input-group">
+                    <input type="radio" name="Answer" value="B" id="B" style="margin-right: 5px"/>
+                    <label class="h4" for="B"><span class="text-muted">B: </span>@Model.AnswerB</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="radio" name="Answer" value="C" id="C" style="margin-right: 5px"/>
+                    <label class="h4" for="C"><span class="text-muted">C: </span>@Model.AnswerC</label>
+                </div>
+                
+                <div class="input-group">
+                    <input type="radio" name="Answer" value="D" id="D" style="margin-right: 5px"/>
+                    <label class="h4" for="D"><span class="text-muted">D: </span>@Model.AnswerD</label>
+                </div>
+                
+                <br/>
+                <input type="submit" class="btn btn-primary" value="@btnName"/>
             </div>
         </div>
     </div>

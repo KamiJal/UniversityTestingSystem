@@ -6,7 +6,7 @@ using System.Web;
 
 namespace UniversityTestingSystem.Models.University.Test
 {
-    public class StudentFinishedTestAnswer
+    public class FinishedTest
     {
         public int Id { get; set; }
 
@@ -16,12 +16,8 @@ namespace UniversityTestingSystem.Models.University.Test
         public int TestId { get; set; }
         public Test Test { get; set; }
 
-        public int TestQuestionId { get; set; }
-        public TestQuestion TestQuestion { get; set; }
+        public DateTime FinishedDate { get; set; }
 
-        [Required]
-        [StringLength(1)]
-        public string StudentAnswer { get; set; }
-
+        public short Points { get; set; }
     }
 }

@@ -9,9 +9,8 @@ namespace UniversityTestingSystem.Models.ViewModels
     public class TestAnswerViewModel
     {
         public int QuestionId { get; set; }
-        public int CurrentQuestionId { get; set; }
 
         [Required]
-        public string StudentAnswer { get; set; }
+        public string Answer { get; set; }
     }
 }
