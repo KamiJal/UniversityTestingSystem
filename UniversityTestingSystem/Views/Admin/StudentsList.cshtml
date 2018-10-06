@@ -1,0 +1,77 @@
+﻿@model UniversityTestingSystem.Models.ViewModels.StudentsListViewModel
+@{
+    ViewBag.Title = "StudentsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--HEADER-->
+<div class="page-header">
+    <h4 class="text-muted">Студенты</h4>
+</div>
+
+@if (Model.Students.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Группа</th>
+                <th>Факультет</th>
+                <th>Выполненные тесты</th>
+                <th>Прикрепленные тесты</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@Html.ActionLink(@student.FirstName + " " + @student.LastName, "StudentProfile", new { id = student.Id })</td>
+                    <td>@student.Faculty.Code-@student.Group.Name</td>
+                    <td>@student.Faculty.Name</td>
+                    <td>
+                        @if (Model.CompletedTests.Any())
+                        {
+                            <ul>
+
+                                @foreach (var test in Model.CompletedTests.Where(q => q.StudentId == student.Id))
+                                {
+                                    <li>
+                                        Дата: @test.CompletedDate.ToShortDateString()<br />
+                                        Тест: @test.Test.Name
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>Тестов нет</span>
+                        }
+                    </td>
+                    <td>
+                        @if (Model.ScheduledTests.Any())
+                        {
+                            <ul>
+
+                                @foreach (var test in Model.ScheduledTests.Where(q => q.StudentId == student.Id))
+                                {
+                                    <li>
+                                        Дата: @test.AssignedDate.ToShortDateString()<br />
+                                        Тест: @test.Test.Name
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>Тестов нет</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="h3">Список студентов пуст</p>
+}

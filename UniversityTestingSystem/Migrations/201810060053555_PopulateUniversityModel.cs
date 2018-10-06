@@ -7,6 +7,13 @@
     {
         public override void Up()
         {
+            Sql("INSERT INTO [dbo].[AspNetUsers] ([Id], [Email], [EmailConfirmed], [PasswordHash], [SecurityStamp], [PhoneNumber], [PhoneNumberConfirmed], [TwoFactorEnabled], [LockoutEndDateUtc], [LockoutEnabled], [AccessFailedCount], [UserName]) VALUES (N'3e7787e0-b0c1-4f1d-b681-284031ead5bc', N'admin@asu.com', 0, N'AMdXerr1XdtrhWsP/UOfmZx9mDypuj3ojcyOqUvVcBvRK3+qAjBvPZcs6tVFg+m7NQ==', N'ca431974-b013-4005-8058-8dec96195cf0', NULL, 0, 0, NULL, 1, 0, N'admin@asu.com')");
+
+            Sql("INSERT INTO [dbo].[AspNetRoles] ([Id], [Name]) VALUES (N'09b920ee-239d-4efd-9e74-75b730dac418', N'administrator')");
+            Sql("INSERT INTO[dbo].[AspNetRoles]([Id], [Name]) VALUES(N'86d10e4d-548f-4ac7-b6d2-d58d76bafcef', N'student')");
+
+            Sql("INSERT INTO [dbo].[AspNetUserRoles] ([UserId], [RoleId]) VALUES (N'3e7787e0-b0c1-4f1d-b681-284031ead5bc', N'09b920ee-239d-4efd-9e74-75b730dac418')");
+
             Sql("INSERT INTO Faculties (Code, Name) VALUES ('JOU', N'Журналистика')");
             Sql("INSERT INTO Faculties (Code, Name) VALUES ('TRA', N'Переводческое дело')");
             Sql("INSERT INTO Faculties (Code, Name) VALUES ('PSY', N'Психология')");
@@ -24,7 +31,7 @@
             Sql("INSERT INTO Subjects (Name) VALUES (N'География')");
 
             Sql("INSERT INTO Tests (Name, AddedDate, SubjectId) VALUES (N'Термодинамика', N'2018-10-04 00:00:00', 3)");
-            Sql("INSERT INTO Tests (Name, AddedDate, SubjectId) VALUES (N'Физическая георгафия', N'2018-10-04 00:00:00', 4)");
+            Sql("INSERT INTO Tests (Name, AddedDate, SubjectId) VALUES (N'Физическая география', N'2018-10-04 00:00:00', 4)");
 
 
             Sql("INSERT INTO TestQuestions(TestId, Question, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer) VALUES (1, N'Тепловой двигатель за один цикл получает от нагревателя 100 кДж теплоты и отдает холодильнику 60 кДж. Чему равен КПД этого двигателя (%)?', N'60', N'67', N'40', N'25', 'C')");
@@ -60,7 +67,7 @@
             Sql("INSERT INTO TestQuestions(TestId, Question, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer) VALUES (2, N'Различные расы человечества формируются под влиянием ...', N'окружающей природной среды', N'государственного строя', N'условий проживания', N'хозяйственной деятельности', 'A')");
             Sql("INSERT INTO TestQuestions(TestId, Question, AnswerA, AnswerB, AnswerC, AnswerD, CorrectAnswer) VALUES (2, N'Больше всего людей в мире, говорящих на ...', N'английском языке', N'индийском языке', N'японском языке', N'китайском языке', 'D')");
         }
-
+        
         public override void Down()
         {
         }

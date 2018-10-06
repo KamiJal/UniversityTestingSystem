@@ -1,0 +1,62 @@
+﻿@using Microsoft.AspNet.Identity
+@using UniversityTestingSystem.Models.University.Test
+@model UniversityTestingSystem.Models.ViewModels.StudentProfileViewModel
+
+@{
+    ViewBag.Title = "StudentDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--HEADER-->
+<div class="page-header">
+    <h4 class="text-muted">Студент</h4>
+</div>
+
+<!--CONTENT-->
+<section>
+    @using (Html.BeginForm("EditStudent", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("id", Model.Student.Id)
+        @Html.Partial("_StudentForm", Model.StudentFormViewModel)
+    }
+    <br />
+</section>
+
+<hr />
+
+<!--SCHEDULED TESTS-->
+<section class="row">
+    @Html.Partial("_ScheduledTests", Model.ScheduledTests)
+    
+    <br />
+
+    @using (Html.BeginForm("ScheduleTestToStudent", "Admin", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("studentId", Model.Student.Id)
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("testId", "Присвоить тест на выполнение", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-3">
+                    @Html.DropDownList("testId", new SelectList(Model.Tests, "Id", "Name"), "Выберите тест из списка", htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" value="Присвоить" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+
+    }
+    <br />
+</section>
+
+<hr />
+
+<!--COMPLETED TESTS-->
+<section class="row">
+    @Html.Partial("_CompletedTests", Model.CompletedTests)
+    <br />
+</section>

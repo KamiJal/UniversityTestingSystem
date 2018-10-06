@@ -13,11 +13,12 @@ namespace UniversityTestingSystem.Models.Utility
         public static string UserId { get; set; }
         public static Student Student { get; set; }
 
+        public static ScheduledTest ScheduledTest { get; set; }
         public static Test Test { get; set; }
         public static List<TestQuestion> TestQuestions { get; set; }
         public static int QuestionIterator { get; set; }
 
-        public static int FinishedTestId { get; set; }
+        public static int CompletedTestId { get; set; }
 
 
         public static TestQuestionViewModel GetTestQuestionViewModel()

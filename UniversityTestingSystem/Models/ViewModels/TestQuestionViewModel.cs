@@ -21,14 +21,14 @@ namespace UniversityTestingSystem.Models.ViewModels
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
 
-        public TestQuestionViewModel(TestQuestion current)
+        public TestQuestionViewModel(TestQuestion question)
         {
-            QuestionId = current.Id;
-            Question = current.Question;
-            AnswerA = current.AnswerA;
-            AnswerB = current.AnswerB;
-            AnswerC = current.AnswerC;
-            AnswerD = current.AnswerD;
+            QuestionId = question.Id;
+            Question = question.Question;
+            AnswerA = question.AnswerA;
+            AnswerB = question.AnswerB;
+            AnswerC = question.AnswerC;
+            AnswerD = question.AnswerD;
         }
     }
 }

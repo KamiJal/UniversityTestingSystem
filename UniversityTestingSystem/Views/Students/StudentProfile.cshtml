@@ -1,38 +1,30 @@
 ﻿@using UniversityTestingSystem.Models.University.Test
 @model UniversityTestingSystem.Models.ViewModels.StudentProfileViewModel
+
 @{
+    ViewBag.Title = "StudentDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<br/>
-
-<h4 class="text-muted">Студент</h4>
-<p class="h2">@Model.Student.FirstName @Model.Student.LastName</p>
-<hr/>
-
-<div class="row">
-
-    <div class="col-md-10">
-        <h4 class="text-muted">Факультет</h4>
-        <p class="h3">@Model.Student.Faculty.Name</p>
-    </div>
-    
-    <div class="col-md-10">
-        <h4 class="text-muted">Группа</h4>
-        <p class="h3">@Model.Student.Faculty.Code-@Model.Student.Group.Name</p>
-    </div>
-
-    <div class="col-md-10">
-        <h4 class="text-muted">Выполненные тесты</h4>
-        
-        <ul>
-            @foreach (Test test in Model.FinishedTests)
-            {
-                <li>@test.Name</li>
-            }
-        </ul>
-    </div>
-
+<!--HEADER-->
+<div class="page-header">
+    <h4 class="text-muted">Студент</h4>
+    <p class="h2">@Model.Student.FirstName @Model.Student.LastName</p>
 </div>
 
+<!--CONTENT-->
+<div class="row">
 
+    <!--FACULTY-->
+    @Html.Partial("_Faculty", Model.Student.Faculty)
+
+    <!--GROUP-->
+    @Html.Partial("_Group", Model.Student)
+
+    <!--SCHEDULED TESTS-->
+    @Html.Partial("_ScheduledTests", Model.ScheduledTests)
+
+    <!--COMPLETED TESTS-->
+    @Html.Partial("_CompletedTests", Model.CompletedTests)
+
+</div>

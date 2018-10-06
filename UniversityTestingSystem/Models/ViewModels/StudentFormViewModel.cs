@@ -11,6 +11,7 @@ namespace UniversityTestingSystem.Models.ViewModels
     public class StudentFormViewModel
     {
         public string UserId { get; set; }
+        public string Login { get; set; }
 
         [Required(ErrorMessage = ErrorMessages.RequiredTextBox)]
         [Display(Name = DisplayNames.FirstName)]
@@ -30,18 +31,18 @@ namespace UniversityTestingSystem.Models.ViewModels
         [Display(Name = DisplayNames.Faculty)]
         public int FacultyId { get; set; }
 
-        public List<Group> Groups { get; set; }
-        public List<Faculty> Faculties { get; set; }
+        public IEnumerable<Group> Groups { get; set; }
+        public IEnumerable<Faculty> Faculties { get; set; }
 
 
         public StudentFormViewModel() { }
 
         public StudentFormViewModel(Student student)
         {
-            this.FirstName = student.FirstName;
-            this.LastName = student.LastName;
-            this.GroupId = student.GroupId;
-            this.FacultyId = student.FacultyId;
+            FirstName = student.FirstName;
+            LastName = student.LastName;
+            GroupId = student.GroupId;
+            FacultyId = student.FacultyId;
         }
     }
 }

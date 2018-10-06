@@ -10,8 +10,8 @@ namespace UniversityTestingSystem.Models.University.Test
     {
         public int Id { get; set; }
 
-        public int FinishedTestId { get; set; }
-        public FinishedTest FinishedTest { get; set; }
+        public int CompletedTestId { get; set; }
+        public CompletedTest CompletedTest { get; set; }
 
         public int TestQuestionId { get; set; }
         public TestQuestion TestQuestion { get; set; }

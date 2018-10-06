@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace UniversityTestingSystem.Models.University.Test
 {
-    public class FinishedTest
+    public class ScheduledTest
     {
         public int Id { get; set; }
 
@@ -16,8 +15,8 @@ namespace UniversityTestingSystem.Models.University.Test
         public int TestId { get; set; }
         public Test Test { get; set; }
 
-        public DateTime FinishedDate { get; set; }
+        public DateTime AssignedDate { get; set; }
 
-        public short Points { get; set; }
+        public bool IsCompleted { get; set; } = false;
     }
 }

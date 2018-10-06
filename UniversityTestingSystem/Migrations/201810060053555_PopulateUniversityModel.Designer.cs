@@ -7,13 +7,13 @@ namespace UniversityTestingSystem.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UniversityModel : IMigrationMetadata
+    public sealed partial class PopulateUniversityModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UniversityModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(PopulateUniversityModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201810042343496_UniversityModel"; }
+            get { return "201810060053555_PopulateUniversityModel"; }
         }
         
         string IMigrationMetadata.Source

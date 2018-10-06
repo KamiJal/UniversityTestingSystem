@@ -8,23 +8,13 @@ namespace UniversityTestingSystem.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Faculties",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Code = c.String(nullable: false, maxLength: 3),
-                        Name = c.String(nullable: false, maxLength: 255),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.FinishedTests",
+                "dbo.CompletedTests",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         StudentId = c.Int(nullable: false),
                         TestId = c.Int(nullable: false),
-                        FinishedDate = c.DateTime(nullable: false),
+                        CompletedDate = c.DateTime(nullable: false),
                         Points = c.Short(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -43,7 +33,6 @@ namespace UniversityTestingSystem.Migrations
                         LastName = c.String(nullable: false, maxLength: 255),
                         GroupId = c.Int(nullable: false),
                         FacultyId = c.Int(nullable: false),
-                        IsFormFilled = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Faculties", t => t.FacultyId, cascadeDelete: true)
@@ -52,6 +41,16 @@ namespace UniversityTestingSystem.Migrations
                 .Index(t => t.UserId)
                 .Index(t => t.GroupId)
                 .Index(t => t.FacultyId);
+            
+            CreateTable(
+                "dbo.Faculties",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Code = c.String(nullable: false, maxLength: 3),
+                        Name = c.String(nullable: false, maxLength: 255),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Groups",
@@ -85,18 +84,34 @@ namespace UniversityTestingSystem.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.ScheduledTests",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        StudentId = c.Int(nullable: false),
+                        TestId = c.Int(nullable: false),
+                        AssignedDate = c.DateTime(nullable: false),
+                        IsCompleted = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Students", t => t.StudentId, cascadeDelete: true)
+                .ForeignKey("dbo.Tests", t => t.TestId, cascadeDelete: true)
+                .Index(t => t.StudentId)
+                .Index(t => t.TestId);
+            
+            CreateTable(
                 "dbo.TestAnswersLists",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        FinishedTestId = c.Int(nullable: false),
+                        CompletedTestId = c.Int(nullable: false),
                         TestQuestionId = c.Int(nullable: false),
                         Answer = c.String(nullable: false, maxLength: 1),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.FinishedTests", t => t.FinishedTestId, cascadeDelete: true)
+                .ForeignKey("dbo.CompletedTests", t => t.CompletedTestId, cascadeDelete: true)
                 .ForeignKey("dbo.TestQuestions", t => t.TestQuestionId, cascadeDelete: true)
-                .Index(t => t.FinishedTestId)
+                .Index(t => t.CompletedTestId)
                 .Index(t => t.TestQuestionId);
             
             CreateTable(
@@ -119,29 +134,34 @@ namespace UniversityTestingSystem.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.TestAnswersLists", "TestQuestionId", "dbo.TestQuestions");
-            DropForeignKey("dbo.TestAnswersLists", "FinishedTestId", "dbo.FinishedTests");
-            DropForeignKey("dbo.FinishedTests", "TestId", "dbo.Tests");
+            DropForeignKey("dbo.TestAnswersLists", "CompletedTestId", "dbo.CompletedTests");
+            DropForeignKey("dbo.ScheduledTests", "TestId", "dbo.Tests");
+            DropForeignKey("dbo.ScheduledTests", "StudentId", "dbo.Students");
+            DropForeignKey("dbo.CompletedTests", "TestId", "dbo.Tests");
             DropForeignKey("dbo.Tests", "SubjectId", "dbo.Subjects");
-            DropForeignKey("dbo.FinishedTests", "StudentId", "dbo.Students");
+            DropForeignKey("dbo.CompletedTests", "StudentId", "dbo.Students");
             DropForeignKey("dbo.Students", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Students", "GroupId", "dbo.Groups");
             DropForeignKey("dbo.Students", "FacultyId", "dbo.Faculties");
             DropIndex("dbo.TestAnswersLists", new[] { "TestQuestionId" });
-            DropIndex("dbo.TestAnswersLists", new[] { "FinishedTestId" });
+            DropIndex("dbo.TestAnswersLists", new[] { "CompletedTestId" });
+            DropIndex("dbo.ScheduledTests", new[] { "TestId" });
+            DropIndex("dbo.ScheduledTests", new[] { "StudentId" });
             DropIndex("dbo.Tests", new[] { "SubjectId" });
             DropIndex("dbo.Students", new[] { "FacultyId" });
             DropIndex("dbo.Students", new[] { "GroupId" });
             DropIndex("dbo.Students", new[] { "UserId" });
-            DropIndex("dbo.FinishedTests", new[] { "TestId" });
-            DropIndex("dbo.FinishedTests", new[] { "StudentId" });
+            DropIndex("dbo.CompletedTests", new[] { "TestId" });
+            DropIndex("dbo.CompletedTests", new[] { "StudentId" });
             DropTable("dbo.TestQuestions");
             DropTable("dbo.TestAnswersLists");
+            DropTable("dbo.ScheduledTests");
             DropTable("dbo.Subjects");
             DropTable("dbo.Tests");
             DropTable("dbo.Groups");
-            DropTable("dbo.Students");
-            DropTable("dbo.FinishedTests");
             DropTable("dbo.Faculties");
+            DropTable("dbo.Students");
+            DropTable("dbo.CompletedTests");
         }
     }
 }

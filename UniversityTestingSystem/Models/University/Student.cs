@@ -38,5 +38,14 @@ namespace UniversityTestingSystem.Models.University
         public int FacultyId { get; set; }
 
         public Faculty Faculty { get; set; }
+
+
+        public void Map(Student student)
+        {
+            FirstName = student.FirstName;
+            LastName = student.LastName;
+            GroupId = student.GroupId;
+            FacultyId = student.FacultyId;
+        }
     }
 }

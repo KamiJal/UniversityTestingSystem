@@ -1,0 +1,40 @@
+﻿@model IEnumerable<UniversityTestingSystem.Models.University.Test.CompletedTest>
+
+    <!--COMPLETED TESTS-->
+    <section class="col-md-10">
+        <h4 class="text-muted">Выполненные тесты</h4>
+
+        @if (Model.Any())
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr class="text-muted">
+                        <th>Тема теста</th>
+                        <th>Предмет</th>
+                        <th>Дата выполнения</th>
+                        <th>Оценка</th>
+                        <th>Итог</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var test in Model)
+                    {
+                        var mark = test.Points < 9 ? "-" : test.Points < 11 ? "3" : test.Points < 14 ? "4" : "5";
+                        var sum = mark.Equals("-") ? "Тест не сдан" : "Тест сдан";
+                        var sumClass = mark.Equals("-") ? "text-danger" : "text-success";
+                        <tr>
+                            <td>@test.Test.Name</td>
+                            <td>@test.Test.Subject.Name</td>
+                            <td>@test.CompletedDate.ToShortDateString()</td>
+                            <td>@mark</td>
+                            <td class="@sumClass">@sum</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="h3">Пока нет завершенных тестов</p>
+        }
+    </section>

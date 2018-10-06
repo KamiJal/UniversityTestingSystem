@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using UniversityTestingSystem.Models;
 using UniversityTestingSystem.Models.University;
@@ -16,7 +17,7 @@ using UniversityTestingSystem.Models.ViewModels;
 namespace UniversityTestingSystem.Controllers
 {
 
-    [Authorize]
+    [Authorize(Roles = RoleNames.Student)]
     public class StudentsController : Controller
     {
         //readonly dbContext to access the Db
@@ -74,11 +75,18 @@ namespace UniversityTestingSystem.Controllers
                 return RedirectToAction("StudentForm", "Students");
             }
 
-            var viewModel = new StudentProfileViewModel
+            var viewModel = new StudentProfileViewModel()
             {
                 Student = CurrentUserData.Student,
-                FinishedTests = _context.FinishedTests.Include(q => q.Test)
-                    .Where(q => q.StudentId == CurrentUserData.Student.Id).Select(q => q.Test).ToList()
+                CompletedTests = _context.CompletedTests
+                    .Include(q => q.Test)
+                    .Include(q => q.Test.Subject)
+                    .Where(q => q.StudentId == CurrentUserData.Student.Id).ToList(),
+
+                ScheduledTests = _context.ScheduledTests
+                    .Include(q => q.Test)
+                    .Include(q => q.Test.Subject)
+                    .Where(q => q.StudentId == CurrentUserData.Student.Id && q.IsCompleted == false).ToList()
             };
 
             return View(viewModel);
@@ -88,8 +96,10 @@ namespace UniversityTestingSystem.Controllers
         //form to fill by new user
         public ActionResult StudentForm()
         {
-            var viewModel = new StudentFormViewModel
+            var viewModel = new StudentFormViewModel()
             {
+                UserId = User.Identity.GetUserId(),
+                Login = User.Identity.Name,
                 Faculties = _context.Faculties.ToList(),
                 Groups = _context.Groups.ToList()
             };
@@ -120,32 +130,40 @@ namespace UniversityTestingSystem.Controllers
             return RedirectToAction("StudentProfile");
         }
 
-        // GET: /Students/StartTest/{int id}
+        // POST: /Students/StartTest/{int id}
         //starts test by id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult StartTest(int id)
         {
-            if (!_context.Tests.Any(t => t.Id == id))
+            CurrentUserData.ScheduledTest = _context.ScheduledTests.SingleOrDefault(q => q.Id == id);
+
+            if (CurrentUserData.ScheduledTest == null || CurrentUserData.ScheduledTest.StudentId != CurrentUserData.Student.Id)
                 return View("Error");
 
-            CurrentUserData.Test = _context.Tests.Single(t => t.Id == id);
+            if (!_context.Tests.Any(q => q.Id == CurrentUserData.ScheduledTest.TestId))
+                return View("Error");
+
+            CurrentUserData.Test = _context.Tests.Single(t => t.Id == CurrentUserData.ScheduledTest.TestId);
 
             CurrentUserData.TestQuestions = _context.TestQuestions
-                .Where(tq => tq.TestId == id)
+                .Where(tq => tq.TestId == CurrentUserData.Test.Id)
                 .ToList();
 
             CurrentUserData.QuestionIterator = 0;
 
-            var test = new FinishedTest
+            var completedTest = new CompletedTest
             {
                 StudentId = CurrentUserData.Student.Id,
                 TestId = CurrentUserData.Test.Id,
-                FinishedDate = DateTime.Now
+                CompletedDate = DateTime.Now
             };
 
-            _context.FinishedTests.Add(test);
+            _context.CompletedTests.Add(completedTest);
+
             SaveChangesToDbSafe();
 
-            CurrentUserData.FinishedTestId = test.Id;
+            CurrentUserData.CompletedTestId = completedTest.Id;
 
             return RedirectToAction("TestOnAir");
         }
@@ -157,7 +175,7 @@ namespace UniversityTestingSystem.Controllers
             if (CurrentUserData.QuestionIterator == 15)
             {
                 CalculateTestResult();
-                return View("TestFinished", CurrentUserData.Test.Name);
+                return View("TestCompleted", (object)CurrentUserData.Test.Name);
             }
 
             var viewModel = CurrentUserData.GetTestQuestionViewModel();
@@ -170,7 +188,7 @@ namespace UniversityTestingSystem.Controllers
             short points = 0;
 
             var userAnswers = _context.TestAnswersLists
-                .Where(q => q.FinishedTestId == CurrentUserData.FinishedTestId).ToList();
+                .Where(q => q.CompletedTestId == CurrentUserData.CompletedTestId).ToList();
 
             foreach (var userAnswer in userAnswers)
             {
@@ -179,8 +197,11 @@ namespace UniversityTestingSystem.Controllers
                     points++;
             }
 
-            var finishedTestInDb = _context.FinishedTests.Single(q => q.Id == CurrentUserData.FinishedTestId);
-            finishedTestInDb.Points = points;
+            var completedTestInDb = _context.CompletedTests.Single(q => q.Id == CurrentUserData.CompletedTestId);
+            completedTestInDb.Points = points;
+
+            var scheduledTestInDb = _context.ScheduledTests.Single(q => q.Id == CurrentUserData.ScheduledTest.Id);
+            scheduledTestInDb.IsCompleted = true;
 
            SaveChangesToDbSafe();
         }
@@ -199,7 +220,7 @@ namespace UniversityTestingSystem.Controllers
 
             var testAnswer = new TestAnswersList
             {
-                FinishedTestId = CurrentUserData.FinishedTestId,
+                CompletedTestId = CurrentUserData.CompletedTestId,
                 TestQuestionId = response.QuestionId,
                 Answer = response.Answer
             };
