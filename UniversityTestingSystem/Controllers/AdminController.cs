@@ -8,10 +8,12 @@ using System.Web.Mvc;
 using UniversityTestingSystem.Models;
 using UniversityTestingSystem.Models.University;
 using UniversityTestingSystem.Models.University.Test;
+using UniversityTestingSystem.Models.Utility;
 using UniversityTestingSystem.Models.ViewModels;
 
 namespace UniversityTestingSystem.Controllers
 {
+    [Authorize(Roles = RoleNames.Administrator)]
     public class AdminController : Controller
     {
         //readonly dbContext to access the Db

@@ -1,16 +1,27 @@
 ﻿@using Microsoft.AspNet.Identity
+@using UniversityTestingSystem.Models.Utility
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Приветствую " + User.Identity.GetUserName() + "!", "StudentProfile", "Students", routeValues: null, htmlAttributes: new { title = "Перейти в профиль" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            
+            @if (User.IsInRole(RoleNames.Administrator))
+            {
+                <li>@Html.ActionLink("Список студентов", "StudentsList", "Admin")</li>
+                <li>@Html.ActionLink("Список тестов", "Index", "Home")</li>
+                @*<li>@Html.ActionLink("Добро пожаловать, хозяин!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "На главную" })</li>*@
+            }
+
+            @if (User.IsInRole(RoleNames.Student))
+            {
+                <li>@Html.ActionLink("Приветствую " + User.Identity.GetUserName() + "!", "StudentProfile", "Students", routeValues: null, htmlAttributes: new { title = "Перейти в профиль" })</li>
+            }
+
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
+        </ul>
     }
 }
 else
